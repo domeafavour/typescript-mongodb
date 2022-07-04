@@ -2,11 +2,12 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import KoaLogger from 'koa-logger';
 import cors from 'koa2-cors';
+import { config } from './config';
 import healthcheckRoutes from './routes/healthcheck';
 
 const app = new Koa();
 
-const PORT = process.env.PORT || 7645;
+const PORT = config.port;
 
 app.use(bodyParser());
 app.use(cors({ origin: '*' }));
