@@ -1,3 +1,7 @@
-export const config = {
-  port: process.env.PORT || 7645,
+interface IConfig {
+  port: number;
+}
+
+export const config: IConfig = {
+  port: parseInt(process.env.PORT!) || 7645,
 };
