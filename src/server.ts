@@ -3,7 +3,9 @@ import bodyParser from 'koa-bodyparser';
 import KoaLogger from 'koa-logger';
 import cors from 'koa2-cors';
 import { config } from './config';
+import connectMongoDb from './connectMongoDb';
 import healthcheckRoutes from './routes/healthcheck';
+import usersRoutes from './routes/users';
 
 const app = new Koa();
 
@@ -15,6 +17,9 @@ app.use(KoaLogger());
 
 // use routes
 app.use(healthcheckRoutes.routes());
+app.use(usersRoutes.routes());
+
+connectMongoDb().catch(console.dir);
 
 const server = app
   .listen(PORT, async () => {
