@@ -1,14 +1,12 @@
 import { ObjectId } from 'mongodb';
-import { client } from '../connectMongoDb';
+import { getCollection } from '../connectMongoDb';
 import { IPagination, IUser } from '../typings';
-
-const testDb = client.db('test');
 
 export async function findUsersByPage(pagination: IPagination) {
   const { page = 1, size = 10 } = pagination;
 
   // db.users.users.find();
-  const collection = testDb.collection<IUser>('users');
+  const collection = getCollection<IUser>('users');
   const usersCursor = collection
     .find({})
     // .project<{ name: string }>({
@@ -24,7 +22,7 @@ export async function findUsersByPage(pagination: IPagination) {
 }
 
 export async function findUserById(id: string) {
-  const collection = testDb.collection<IUser>('users');
+  const collection = getCollection<IUser>('users');
 
   const user = await collection.findOne({
     _id: new ObjectId(id),
