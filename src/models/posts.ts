@@ -10,6 +10,19 @@ export async function findAll() {
   return posts;
 }
 
+export async function createPost(
+  post: Omit<IPost, 'authorId'> & { author: string }
+) {
+  const insertedPost = await db.collection('posts').insertOne({
+    content: post.content,
+    description: post.description,
+    title: post.title,
+    authorId: new ObjectId(post.author),
+  } as IPost);
+
+  return insertedPost;
+}
+
 export async function findPost(id: string) {
   const post = await db.collection('posts').findOne<IPost>({
     _id: new ObjectId(id),
