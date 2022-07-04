@@ -1,0 +1,12 @@
+<div class="container">
+  <h1><%= title %></h1>
+  <p><%= post.content %> </p>
+  <h6>comments</h6>
+  <ul class="list-group">
+    <% post.comments.forEach(function(comment) { %>
+    <li class="list-group-item">
+      <%= comment.title %> - <span><%= comment.user.name %></span>
+    </li>
+    <% }) %>
+  </ul>
+</div>

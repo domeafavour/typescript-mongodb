@@ -3,12 +3,24 @@ import bodyParser from 'koa-bodyparser';
 import KoaLogger from 'koa-logger';
 import cors from 'koa2-cors';
 import serve from 'koa-static';
+import render from 'koa-ejs';
 import { config } from './config';
 import connectMongoDb from './connectMongoDb';
 import healthcheckRoutes from './routes/healthcheck';
 import usersRoutes from './routes/users';
+import viewsRoutes from './routes/views';
+import path from 'path';
 
 const app = new Koa();
+
+// https://www.npmjs.com/package/koa-ejs
+render(app, {
+  root: path.join(__dirname, 'views'),
+  layout: 'layout',
+  viewExt: 'ejs',
+  cache: false,
+  // debug: true,
+});
 
 const PORT = config.port;
 
@@ -20,6 +32,7 @@ app.use(serve(__dirname + '/static'));
 // use routes
 app.use(healthcheckRoutes.routes());
 app.use(usersRoutes.routes());
+app.use(viewsRoutes.routes());
 
 connectMongoDb().catch(console.dir);
 
