@@ -13,12 +13,12 @@ export async function findAll() {
 export async function createPost(
   post: Omit<IPost, 'authorId'> & { author: string }
 ) {
-  const insertedPost = await db.collection('posts').insertOne({
+  const insertedPost = await db.collection<IPost>('posts').insertOne({
     content: post.content,
     description: post.description,
     title: post.title,
     authorId: new ObjectId(post.author),
-  } as IPost);
+  });
 
   return insertedPost;
 }
