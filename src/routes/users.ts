@@ -1,4 +1,5 @@
 import Router from 'koa-router';
+import { ObjectId } from 'mongodb';
 import { client } from '../connectMongoDb';
 import { IPagination, IUser } from '../typings';
 
@@ -36,7 +37,31 @@ router.post('list', async (ctx) => {
   } catch (error) {
     console.error(error);
 
+    ctx.status = 500;
+    ctx.body = {
+      status: 'error',
+      data: null,
+    };
+  }
+});
+
+router.get(':id', async (ctx) => {
+  try {
+    const collection = testDb.collection<IUser>('users');
+
+    const user = await collection.findOne({
+      _id: new ObjectId(ctx.params.id),
+    });
+
     ctx.status = 200;
+    ctx.body = {
+      status: 'success',
+      data: user,
+    };
+  } catch (error) {
+    console.error(error);
+
+    ctx.status = 500;
     ctx.body = {
       status: 'error',
       data: null,
