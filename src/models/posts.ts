@@ -1,4 +1,4 @@
-import { ObjectID } from 'bson';
+import { ObjectId } from 'mongodb';
 import { client } from '../connectMongoDb';
 import { IPost, IUser } from '../typings';
 
@@ -12,7 +12,7 @@ export async function findAll() {
 
 export async function findPost(id: string) {
   const post = await db.collection('posts').findOne<IPost>({
-    _id: new ObjectID(id),
+    _id: new ObjectId(id),
   });
 
   const commentsCursor = db
