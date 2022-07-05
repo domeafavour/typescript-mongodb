@@ -24,13 +24,15 @@ export async function createPost(
 }
 
 export async function findPost(id: string) {
+  const postObjectId = new ObjectId(id);
   const post = await db.collection('posts').findOne<IPost>({
-    _id: new ObjectId(id),
+    _id: postObjectId,
   });
 
   const commentsCursor = db
     .collection('comments')
     .aggregate<IPost & { users: IUser[] }>([
+      { $match: { postId: postObjectId } },
       {
         $lookup: {
           localField: 'userId',
@@ -39,21 +41,13 @@ export async function findPost(id: string) {
           as: 'users',
         },
       },
-      {
-        $project: {
-          title: 1,
-          users: 1,
-        },
-      },
+      { $project: { title: 1, user: { $first: '$users' } } },
     ]);
 
   const comments = await commentsCursor.toArray();
 
   return {
     ...post,
-    comments: comments.map((comment) => ({
-      title: comment.title,
-      user: comment.users[0],
-    })),
+    comments,
   };
 }
