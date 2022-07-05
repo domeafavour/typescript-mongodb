@@ -1,11 +1,9 @@
 import { ObjectId } from 'mongodb';
-import { client } from '../connectMongoDb';
+import { getCollection } from '../connectMongoDb';
 import { IPost, IUser } from '../typings';
 
-const db = client.db('test');
-
 export async function findAll() {
-  const cursor = db.collection('posts').find({});
+  const cursor = getCollection('posts').find({});
   const posts = await cursor.toArray();
   return posts;
 }
@@ -13,7 +11,7 @@ export async function findAll() {
 export async function createPost(
   post: Omit<IPost, 'authorId'> & { author: string }
 ) {
-  const insertedPost = await db.collection<IPost>('posts').insertOne({
+  const insertedPost = await getCollection<IPost>('posts').insertOne({
     content: post.content,
     description: post.description,
     title: post.title,
@@ -25,24 +23,24 @@ export async function createPost(
 
 export async function findPost(id: string) {
   const postObjectId = new ObjectId(id);
-  const post = await db.collection('posts').findOne<IPost>({
+  const post = await getCollection('posts').findOne<IPost>({
     _id: postObjectId,
   });
 
-  const commentsCursor = db
-    .collection('comments')
-    .aggregate<IPost & { users: IUser[] }>([
-      { $match: { postId: postObjectId } },
-      {
-        $lookup: {
-          localField: 'userId',
-          from: 'users',
-          foreignField: '_id',
-          as: 'users',
-        },
+  const commentsCursor = getCollection('comments').aggregate<
+    IPost & { users: IUser[] }
+  >([
+    { $match: { postId: postObjectId } },
+    {
+      $lookup: {
+        localField: 'userId',
+        from: 'users',
+        foreignField: '_id',
+        as: 'users',
       },
-      { $project: { title: 1, user: { $first: '$users' } } },
-    ]);
+    },
+    { $project: { title: 1, user: { $first: '$users' } } },
+  ]);
 
   const comments = await commentsCursor.toArray();
 
