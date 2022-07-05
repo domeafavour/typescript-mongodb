@@ -1,15 +1,16 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-import KoaLogger from 'koa-logger';
-import cors from 'koa2-cors';
-import serve from 'koa-static';
 import render from 'koa-ejs';
+import KoaLogger from 'koa-logger';
+import serve from 'koa-static';
+import cors from 'koa2-cors';
+import path from 'path';
 import { config } from './config';
 import connectMongoDb from './connectMongoDb';
+import { responseMiddleware } from './middlewares/response-middleware';
 import healthcheckRoutes from './routes/healthcheck';
 import usersRoutes from './routes/users';
 import viewsRoutes from './routes/views';
-import path from 'path';
 
 const app = new Koa();
 
@@ -28,6 +29,9 @@ app.use(bodyParser());
 app.use(cors({ origin: '*' }));
 app.use(KoaLogger());
 app.use(serve(__dirname + '/static'));
+
+// custom middlewares
+app.use(responseMiddleware);
 
 // use routes
 app.use(healthcheckRoutes.routes());
