@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { findUserById, findUsersByPage } from '../models/users';
+import { findUserById, findUsersByPage } from '../controllers/users';
 import { IPagination } from '../typings';
 
 const router = new Router({

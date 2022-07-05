@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { findAll, findPost } from '../models/posts';
+import { findAll, findPost } from '../controllers/posts';
 
 const router = new Router({
   prefix: '/views/',
