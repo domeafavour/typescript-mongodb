@@ -6,6 +6,26 @@ const router = new Router({
   prefix: '/views/',
 });
 
+router.get('login', async (ctx) => {
+  await ctx.render('login', {
+    title: 'LOGIN',
+    error: null,
+    email: null,
+  });
+});
+
+router.get('register', async (ctx) => {
+  await ctx.render('register', {
+    title: 'REGISTER',
+  });
+});
+
+router.get('welcome', async (ctx) => {
+  await ctx.render('welcome', {
+    name: null,
+  });
+});
+
 router.get('posts', async (ctx) => {
   const posts = await findAll();
 

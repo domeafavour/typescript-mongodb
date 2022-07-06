@@ -13,6 +13,7 @@ import usersRoutes from './routes/users';
 import viewsRoutes from './routes/views';
 import postsRoutes from './routes/posts';
 import commentsRoutes from './routes/comments';
+import accountRoutes from './routes/account';
 
 const app = new Koa();
 
@@ -41,6 +42,7 @@ app.use(usersRoutes.routes());
 app.use(viewsRoutes.routes());
 app.use(postsRoutes.routes());
 app.use(commentsRoutes.routes());
+app.use(accountRoutes.routes());
 
 connectMongoDb().catch(console.dir);
 

@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { getCollection } from '../connectMongoDb';
-import { IPagination, IUser, WithStringId } from '../typings';
+import { Account, IPagination, IUser, WithStringId } from '../typings';
 
 export async function findUsersByPage(pagination: IPagination) {
   const { page = 1, size = 10 } = pagination;
@@ -32,5 +32,12 @@ export async function findUserById(id: string) {
     _id: new ObjectId(id),
   });
 
+  return user;
+}
+
+export async function findUserByEmail(email: string) {
+  const user = await getCollection<Account.User>('users').findOne({
+    email,
+  });
   return user;
 }
