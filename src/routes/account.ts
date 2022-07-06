@@ -1,6 +1,5 @@
 import Router from 'koa-router';
-import { getCollection } from '../connectMongoDb';
-import { findUserByEmail, findUserById } from '../controllers/users';
+import { login, register } from '../controllers/account';
 import { Account } from '../typings';
 
 const router = new Router({
@@ -9,45 +8,60 @@ const router = new Router({
 
 router.post('login', async (ctx) => {
   const body = ctx.request.body as Account.LoginBody;
-  const user = await findUserByEmail(body.email);
+  const loginResult = await login(body);
 
-  if (user === null) {
-    return await ctx.render('register', {
-      title: 'REGISTER',
-    });
+  switch (loginResult.status) {
+    case 'NO_ACCOUNT': {
+      await ctx.render('register', {
+        title: 'REGISTER',
+      });
+      break;
+    }
+    case 'WRONG_PASSWORD': {
+      await ctx.render('login', {
+        title: 'LOGIN ERROR',
+        error: 'WRONG PASSWORD',
+        email: body.email,
+      });
+      break;
+    }
+    case 'SUCCESS': {
+      await ctx.render('welcome', {
+        title: 'WELCOME',
+        name: loginResult.user.name,
+      });
+      break;
+    }
+    default: {
+      break;
+    }
   }
-  if (body.password === user.password) {
-    return await ctx.render('welcome', {
-      title: 'WELCOME',
-      name: user.name,
-    });
-  }
-  return await ctx.render('login', {
-    title: 'LOGIN ERROR',
-    error: 'WRONG PASSWORD',
-    email: user.email,
-  });
 });
 
 router.post('register', async (ctx) => {
   const body = ctx.request.body as Account.RegisterBody;
+  const registerResult = await register(body);
 
-  const user = await findUserByEmail(body.email);
-  if (user !== null) {
-    return await ctx.render('login', {
-      title: 'LOGIN ERROR',
-      error: 'USER EXISTS',
-      email: user.email,
-    });
+  switch (registerResult.status) {
+    case 'USER_EXISTS': {
+      await ctx.render('login', {
+        title: 'LOGIN ERROR',
+        error: 'USER EXISTS',
+        email: body.email,
+      });
+      break;
+    }
+    case 'SUCCESS': {
+      await ctx.render('welcome', {
+        title: 'WELCOME',
+        name: registerResult.user.name,
+      });
+      break;
+    }
+    default: {
+      break;
+    }
   }
-
-  const { insertedId } = await getCollection('users').insertOne(body);
-  const registerUser = await findUserById(insertedId.toString());
-
-  await ctx.render('welcome', {
-    title: 'WELCOME',
-    name: registerUser?.name,
-  });
 });
 
 export default router;

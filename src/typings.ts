@@ -32,10 +32,14 @@ export module Account {
     password: string;
   };
 
+  export type LoginStatus = 'SUCCESS' | 'WRONG_PASSWORD' | 'NO_ACCOUNT';
+
   export type LoginBody = {
     email: string;
     password: string;
   };
+
+  export type RegisterStatus = 'USER_EXISTS' | 'SUCCESS';
 
   export type RegisterBody = {
     email: string;
