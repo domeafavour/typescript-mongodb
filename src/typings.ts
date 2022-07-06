@@ -5,6 +5,8 @@ export type IPagination = {
   size?: number;
 };
 
+export type WithStringId<T> = T & { id: string };
+
 export type IUser = {
   name: string;
   email: string;

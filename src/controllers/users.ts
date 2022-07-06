@@ -1,17 +1,21 @@
 import { ObjectId } from 'mongodb';
 import { getCollection } from '../connectMongoDb';
-import { IPagination, IUser } from '../typings';
+import { IPagination, IUser, WithStringId } from '../typings';
 
 export async function findUsersByPage(pagination: IPagination) {
   const { page = 1, size = 10 } = pagination;
 
   // db.users.users.find();
-  const collection = getCollection<IUser>('users');
+  const collection = getCollection<WithStringId<IUser>>('users');
   const usersCursor = collection
     .find({})
-    // .project<{ name: string }>({
-    //   name: 1,
-    // })
+    .project<{ name: string }>({
+      id: {
+        $toString: '$_id',
+      },
+      name: 1,
+      email: 1,
+    })
     .skip((page - 1) * size)
     .limit(size);
 

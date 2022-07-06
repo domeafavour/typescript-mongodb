@@ -1,12 +1,38 @@
 <div class="container">
   <h1>Posts</h1>
+  <a href="/views/add-post">New</a>
   <ul class="list-group">
     <% posts.forEach(function(post) {%>
     <li class="list-group-item">
       <a href="/views/posts/<%= post._id %>">
         <%= post.title %>
       </a>
+      <a href="/views/edit-post/<%= post._id %>" class="btn btn-sm btn-info">
+        EDIT
+      </a>
+      <button class="btn btn-sm btn-danger fn-delete" data-id="<%= post._id %>">Delete</button>
     </li>
     <% }); %>
   </ul>
 </div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(function () {
+    async function deletePost(id) {
+      await fetch('/posts/delete', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id
+        }),
+      });
+      window.location.reload();
+    }
+
+    $('.fn-delete').on('click', function () {
+      deletePost($(this).data('id'));
+    })
+  });
+</script>

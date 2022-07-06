@@ -1,0 +1,33 @@
+<form>
+  <% if (post) { %>
+  <input type="text" hidden="hidden" name="id" value="<%= post?.id %>">
+  <% } %>
+  <div class="form-group">
+    <label for="title">title</label>
+    <input type="text" class="form-control" name="title" id="title" value="<%= post?.title %>" />
+  </div>
+  <div class="form-group">
+    <label for="description">description</label>
+    <input type="text" class="form-control" name="description" id="description" value="<%= post?.description %>" />
+  </div>
+  <div class="form-group">
+    <label for="content">content</label>
+    <textarea type="text" class="form-control" name="content" id="content"><%= post?.content %></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="author">author</label>
+    <select type="text" class="form-control" name="author" id="author">
+      <% users.forEach(function (user) { %>
+      <% if (post?.author.id == user.id) { %>
+      <option selected value="<%= user.id %>"><%= user.name %></option>
+      <% } else { %>
+      <option value="<%= user.id %>"><%= user.name %></option>
+      <% } %>
+      <% }) %>
+    </select>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </div>
+</form>

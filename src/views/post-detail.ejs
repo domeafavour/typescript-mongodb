@@ -1,7 +1,9 @@
 <div class="container">
   <h1><%= title %></h1>
-  <p><%= post.content %> </p>
+  <h6 class="text-secondary"><%= post.author.name %></h6>
+  <div id="content"></div>
   <h6>comments</h6>
+  <% if (post.comments.length) { %>
   <ul class="list-group">
     <% post.comments.forEach(function(comment) { %>
     <li class="list-group-item">
@@ -9,4 +11,43 @@
     </li>
     <% }) %>
   </ul>
+  <% } %>
+  <%- include('./comment-form.ejs', { post, users }) %>
 </div>
+<script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  document.getElementById('content').innerHTML = new Remarkable({
+    html: true,
+  }).render(`<%= post.content %>`);
+
+  $(function () {
+    const $commentForm = $('#comment-form');
+
+    async function addComment(values) {
+      await fetch('/comments/add', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values),
+      });
+      window.location.reload();
+    }
+
+    $commentForm.on('submit', function (e) {
+      e.preventDefault();
+
+      const values = Array.prototype.reduce.call($commentForm.find('[name]').map(function () {
+        return {
+          [$(this).attr('name')]: $(this).val()
+        };
+      }), (previous, current) => ({
+        ...previous,
+        ...current
+      }));
+
+      addComment(values);
+    });
+  });
+</script>

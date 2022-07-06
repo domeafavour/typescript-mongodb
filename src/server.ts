@@ -11,6 +11,8 @@ import { responseMiddleware } from './middlewares/response-middleware';
 import healthcheckRoutes from './routes/healthcheck';
 import usersRoutes from './routes/users';
 import viewsRoutes from './routes/views';
+import postsRoutes from './routes/posts';
+import commentsRoutes from './routes/comments';
 
 const app = new Koa();
 
@@ -37,6 +39,8 @@ app.use(responseMiddleware);
 app.use(healthcheckRoutes.routes());
 app.use(usersRoutes.routes());
 app.use(viewsRoutes.routes());
+app.use(postsRoutes.routes());
+app.use(commentsRoutes.routes());
 
 connectMongoDb().catch(console.dir);
 
