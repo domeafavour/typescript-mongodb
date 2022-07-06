@@ -26,11 +26,23 @@ export async function findUsersByPage(pagination: IPagination) {
 }
 
 export async function findUserById(id: string) {
-  const collection = getCollection<IUser>('users');
+  const collection = getCollection<Account.User>('users');
 
-  const user = await collection.findOne({
-    _id: new ObjectId(id),
-  });
+  const user = await collection.findOne(
+    {
+      _id: new ObjectId(id),
+    },
+    {
+      projection: {
+        id: {
+          $toString: '$_id',
+        },
+        name: 1,
+        email: 1,
+        password: 1,
+      },
+    }
+  );
 
   return user;
 }

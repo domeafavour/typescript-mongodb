@@ -1,16 +1,17 @@
 import Router from 'koa-router';
 import { findAll, findPost } from '../controllers/posts';
-import { findUsersByPage } from '../controllers/users';
+import { findUserById, findUsersByPage } from '../controllers/users';
 
 const router = new Router({
   prefix: '/views/',
 });
 
 router.get('login', async (ctx) => {
+  const { error, email } = ctx.query;
   await ctx.render('login', {
     title: 'LOGIN',
-    error: null,
-    email: null,
+    error,
+    email,
   });
 });
 
@@ -21,9 +22,15 @@ router.get('register', async (ctx) => {
 });
 
 router.get('welcome', async (ctx) => {
-  await ctx.render('welcome', {
-    name: null,
-  });
+  const user = await findUserById(ctx.cookie.id);
+  if (user) {
+    await ctx.render('welcome', {
+      title: 'WELCOME',
+      name: user.name,
+    });
+  } else {
+    ctx.redirect('/views/login?error=EXPIRED');
+  }
 });
 
 router.get('posts', async (ctx) => {

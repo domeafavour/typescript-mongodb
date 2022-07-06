@@ -12,24 +12,16 @@ router.post('login', async (ctx) => {
 
   switch (loginResult.status) {
     case 'NO_ACCOUNT': {
-      await ctx.render('register', {
-        title: 'REGISTER',
-      });
+      ctx.redirect('/views/register');
       break;
     }
     case 'WRONG_PASSWORD': {
-      await ctx.render('login', {
-        title: 'LOGIN ERROR',
-        error: 'WRONG PASSWORD',
-        email: body.email,
-      });
+      ctx.redirect('/views/login?error=WRONG_PASSWORD');
       break;
     }
     case 'SUCCESS': {
-      await ctx.render('welcome', {
-        title: 'WELCOME',
-        name: loginResult.user.name,
-      });
+      ctx.cookies.set('id', loginResult.user.id);
+      ctx.redirect('/views/welcome');
       break;
     }
     default: {
@@ -44,18 +36,12 @@ router.post('register', async (ctx) => {
 
   switch (registerResult.status) {
     case 'USER_EXISTS': {
-      await ctx.render('login', {
-        title: 'LOGIN ERROR',
-        error: 'USER EXISTS',
-        email: body.email,
-      });
+      ctx.redirect(`/views/login?error=USER EXISTS&email=${body.email}`);
       break;
     }
     case 'SUCCESS': {
-      await ctx.render('welcome', {
-        title: 'WELCOME',
-        name: registerResult.user.name,
-      });
+      ctx.cookies.set('id', registerResult.user.id);
+      ctx.redirect('/views/welcome');
       break;
     }
     default: {

@@ -1,5 +1,5 @@
 import { getCollection } from '../connectMongoDb';
-import { Account, IUser } from '../typings';
+import { Account } from '../typings';
 import { findUserByEmail, findUserById } from './users';
 
 export async function login(
@@ -9,7 +9,6 @@ export async function login(
   | { status: 'SUCCESS'; user: Account.User }
 > {
   const user = await findUserByEmail(body.email);
-  console.log('user',user)
   if (user === null) {
     return { status: 'NO_ACCOUNT' };
   }
@@ -21,7 +20,7 @@ export async function login(
 
 export async function register(
   body: Account.RegisterBody
-): Promise<{ status: Account.RegisterStatus; user: Account.User | IUser }> {
+): Promise<{ status: Account.RegisterStatus; user: Account.User }> {
   const user = await findUserByEmail(body.email);
   if (user !== null) {
     return { status: 'USER_EXISTS', user };
