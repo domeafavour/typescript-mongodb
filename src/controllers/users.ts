@@ -36,8 +36,21 @@ export async function findUserById(id: string) {
 }
 
 export async function findUserByEmail(email: string) {
-  const user = await getCollection<Account.User>('users').findOne({
-    email,
-  });
+  const user = await getCollection<Account.User>('users').findOne(
+    {
+      email,
+    },
+    {
+      projection: {
+        id: {
+          $toString: '$_id',
+        },
+        _id: 0,
+        name: 1,
+        email: 1,
+        password: 1,
+      },
+    }
+  );
   return user;
 }

@@ -9,6 +9,7 @@ export async function login(
   | { status: 'SUCCESS'; user: Account.User }
 > {
   const user = await findUserByEmail(body.email);
+  console.log('user',user)
   if (user === null) {
     return { status: 'NO_ACCOUNT' };
   }
