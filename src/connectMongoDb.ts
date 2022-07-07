@@ -1,8 +1,6 @@
-import { CollectionOptions, Document, MongoClient } from 'mongodb';
+import { CollectionOptions, Document } from 'mongodb';
 import Mongoose from 'mongoose';
 import { config } from './config';
-
-export const client = new MongoClient(config.mongoClientUrl);
 
 let mongoose: typeof Mongoose | null = null;
 

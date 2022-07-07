@@ -1,18 +1,18 @@
 import Router from 'koa-router';
-import { addComment } from '../controllers/comments';
+import {
+  createComment,
+  deleteComment,
+  findCommentsByPostId,
+  updateComment,
+} from '../controllers/comments';
 
 const router = new Router({
   prefix: '/comments/',
 });
 
-router.post('add', async (ctx) => {
-  const { insertedId } = await addComment(ctx.request.body);
-
-  ctx.status = 200;
-  ctx.body = {
-    status: 'success',
-    data: insertedId.toString(),
-  };
-});
+router.get('list/:postId', findCommentsByPostId);
+router.post('create', createComment);
+router.post('update', updateComment);
+router.post('delete', deleteComment);
 
 export default router;

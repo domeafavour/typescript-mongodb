@@ -1,70 +1,41 @@
-import { ObjectId } from 'mongodb';
-import { getCollection } from '../connectMongoDb';
-import { IUser, WithStringId } from '../typings';
+import Router from 'koa-router';
+import * as commentsService from './../services/comments';
 
-export async function findCommentsByPostId(postId: string) {
-  const cursor = getCollection('comments').aggregate<
-    WithStringId<{
-      title: string;
-      user: WithStringId<IUser>;
-    }>
-  >([
-    {
-      $match: {
-        postId: new ObjectId(postId),
-      },
-    },
-    {
-      $lookup: {
-        from: 'users',
-        localField: 'userId',
-        foreignField: '_id',
-        as: 'users',
-      },
-    },
-    {
-      $project: {
-        title: 1,
-        id: {
-          $toString: '$_id',
-        },
-        _id: 0,
-        user: {
-          $first: [
-            {
-              $map: {
-                input: '$users',
-                as: 'user',
-                in: {
-                  name: '$$user.name',
-                  email: '$$user.email',
-                  id: {
-                    $toString: '$$user._id',
-                  },
-                },
-              },
-            },
-          ],
-        },
-      },
-    },
-  ]);
+export const findCommentsByPostId: Router.IMiddleware = async (ctx) => {
+  const comments = await commentsService.findCommentsByPostId(
+    ctx.params.postId
+  );
 
-  const comments = await cursor.toArray();
-
-  return comments;
-}
-
-type AddCommentEntity = {
-  title: string;
-  postId: string;
-  userId: string;
+  ctx.status = 200;
+  ctx.body = {
+    data: comments,
+  };
 };
 
-export async function addComment(entity: AddCommentEntity) {
-  return await getCollection('comments').insertOne({
-    title: entity.title,
-    postId: new ObjectId(entity.postId),
-    userId: new ObjectId(entity.userId),
-  });
-}
+export const createComment: Router.IMiddleware = async (ctx) => {
+  const { _id } = await commentsService.createComment(ctx.request.body);
+
+  ctx.status = 200;
+  ctx.body = {
+    status: 'success',
+    data: _id.toString(),
+  };
+};
+
+export const updateComment: Router.IMiddleware = async (ctx) => {
+  const updated = await commentsService.updateComment(ctx.request.body);
+
+  ctx.status = 200;
+  ctx.body = {
+    data: updated,
+  };
+};
+
+export const deleteComment: Router.IMiddleware = async (ctx) => {
+  const deleted = await commentsService.deleteComment(ctx.params.id);
+
+  ctx.status = 200;
+  ctx.body = {
+    data: deleted,
+  };
+};
