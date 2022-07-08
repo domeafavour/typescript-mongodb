@@ -6,6 +6,10 @@ export const login: Router.IMiddleware = async (ctx) => {
   const loginUser = ctx.request.body as LoginUserDto;
   const user = await userService.login(loginUser);
 
+  if (user && ctx.session) {
+    ctx.session.currentId = user._id.toString();
+  }
+
   ctx.status = 200;
   ctx.body = {
     success: !!user,

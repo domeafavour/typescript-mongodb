@@ -3,6 +3,7 @@ import bodyParser from 'koa-bodyparser';
 import cookie from 'koa-cookie';
 import render from 'koa-ejs';
 import KoaLogger from 'koa-logger';
+import session from 'koa-session';
 import serve from 'koa-static';
 import cors from 'koa2-cors';
 import path from 'path';
@@ -25,6 +26,8 @@ render(app, {
 
 const PORT = config.port;
 
+app.use(session(app));
+app.keys = ['session'];
 app.use(bodyParser());
 app.use(cookie());
 app.use(cors({ origin: '*' }));
