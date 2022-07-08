@@ -10,6 +10,7 @@ import { config } from './config';
 import connectMongoDb from './connectMongoDb';
 import commentsRoutes from './routes/comments';
 import postsRoutes from './routes/posts';
+import userRoutes from './routes/user';
 
 const app = new Koa();
 
@@ -33,6 +34,7 @@ app.use(serve(__dirname + '/static'));
 // use routes
 app.use(postsRoutes.routes());
 app.use(commentsRoutes.routes());
+app.use(userRoutes.routes());
 
 connectMongoDb().catch(console.dir);
 
