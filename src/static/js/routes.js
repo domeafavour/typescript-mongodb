@@ -3,15 +3,29 @@ import Posts from './components/Posts.js';
 import PostAdd from './components/PostAdd.js';
 import PostDetail from './components/PostDetail.js';
 import PostEdit from './components/PostEdit.js';
+import Account from './components/Account.js';
+import Login from './components/Login.js';
+import Register from './components/Register.js';
 
 /**
- * @type {{ path: string; title: string; component: object; menu: boolean }[]}
+ * @typedef RouteConfigItem
+ * @property {string} path
+ * @property {string} title
+ * @property {any} component
+ * @property {RouteConfigItem} [children]
  */
-export const routes = [
+
+/**
+ * @type {RouteConfigItem[]}
+ */
+export const indexRoutes = [
   {
-    path: '/',
-    title: 'Home',
-    component: Index,
+    path: '/welcome',
+    title: 'Welcome',
+    component: {
+      name: 'welcome',
+      template: `<h1>WELCOME</h1>`,
+    },
     menu: true,
   },
   {
@@ -37,5 +51,37 @@ export const routes = [
     title: 'Post Edit',
     component: PostEdit,
     menu: false,
+  },
+  {
+    path: '/account',
+    title: 'Account',
+    component: Account,
+    menu: true,
+  },
+];
+
+/**
+ * @type {RouteConfigItem[]}
+ */
+export const routes = [
+  {
+    path: '/login',
+    title: 'Login',
+    component: Login,
+    menu: false,
+  },
+  {
+    path: '/register',
+    title: 'Register',
+    component: Register,
+    menu: false,
+  },
+  {
+    path: '/',
+    redirect: '/welcome',
+    title: 'Home',
+    component: Index,
+    menu: false,
+    children: indexRoutes,
   },
 ];

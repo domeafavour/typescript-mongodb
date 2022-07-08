@@ -12,15 +12,7 @@ export default new Vue({
     return { routes };
   },
   template: `
-    <div class="layout">
-      <div class="left">
-        <side-nav :routes="routes" />
-      </div>
-      <div class="right">
-        <topbar />
-        <router-view />
-      </div>
-    </div>
+    <router-view />
   `,
   router,
   components: {
