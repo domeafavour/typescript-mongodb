@@ -5,76 +5,17 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    table {
-      border-collapse: collapse;
-    }
-
-    table td,
-    table th {
-      border: 1px solid #000;
-      padding: .4em 1em;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/app.css">
   <title>Welcome</title>
 </head>
 
 <body>
-  <div>
-    <table id="users">
-      <thead>
-        <tr>
-          <th>NAME</th>
-          <th>EMAIL</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <script>
-    (async () => {
-      const usersTable = document.getElementById('users');
-
-      /**
-       * Render users
-       * @param {{ _id: string; name: string; email: string }[]} users
-       */
-      function render(users) {
-        usersTable.querySelector('tbody').innerHTML = users.reduce((html, user) =>
-          `${html}<tr data-id="${user._id}"><td>${user.name}</td><td>${user.email}</td></tr>`, '');
-      }
-
-      async function fetchUserList() {
-        const res = await fetch('/users/list', {
-          method: 'post',
-          headers: {
-            'content-type': 'application/json'
-          },
-          body: JSON.stringify({
-            page: 1,
-            size: 5
-          })
-        });
-
-        const json = await res.json();
-        return json.data.data;
-      }
-
-      async function fetchUser(id) {
-        const res = await fetch(`/users/${id}`);
-        const json = await res.json();
-        return json.data;
-      }
-
-      fetchUserList().then(render);
-
-      // delegate clicks
-      document.addEventListener('click', function (e) {
-        e.stopPropagation();
-        fetchUser(e.target.parentNode.dataset.id).then(console.log);
-      });
-
-    })();
+  <div id="app"></div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue-router/3.5.3/vue-router.js"></script>
+  <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+  <script type="module">
+    import './js/App.js';
   </script>
 </body>
 
