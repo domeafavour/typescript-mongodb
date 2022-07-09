@@ -1,4 +1,5 @@
 import { indexRoutes } from '../routes.js';
+import { hasCurrentUser } from '../utils/user.js';
 import SideNav from './SideNav.js';
 import Topbar from './Topbar.js';
 
@@ -19,4 +20,17 @@ export default {
       </div>
     </div>
   `,
+  methods: {
+    checkUser() {
+      if (!hasCurrentUser()) {
+        this.$router.replace('/login');
+      }
+    },
+  },
+  mounted() {
+    this.checkUser();
+  },
+  updated() {
+    this.checkUser();
+  },
 };

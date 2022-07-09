@@ -1,11 +1,12 @@
+import Account from './components/Account.js';
 import Index from './components/Index.js';
-import Posts from './components/Posts.js';
+import Login from './components/Login.js';
 import PostAdd from './components/PostAdd.js';
 import PostDetail from './components/PostDetail.js';
 import PostEdit from './components/PostEdit.js';
-import Account from './components/Account.js';
-import Login from './components/Login.js';
+import Posts from './components/Posts.js';
 import Register from './components/Register.js';
+import Welcome from './components/Welcome.js';
 
 /**
  * @typedef RouteConfigItem
@@ -22,10 +23,7 @@ export const indexRoutes = [
   {
     path: '/welcome',
     title: 'Welcome',
-    component: {
-      name: 'welcome',
-      template: `<h1>WELCOME</h1>`,
-    },
+    component: Welcome,
     menu: true,
   },
   {
