@@ -6,6 +6,8 @@ const router = new VueRouter({
   routes,
 });
 
+const vuetify = new Vuetify();
+
 export default new Vue({
   el: document.getElementById('app'),
   data() {
@@ -15,6 +17,7 @@ export default new Vue({
     <router-view />
   `,
   router,
+  vuetify,
   components: {
     SideNav,
     Topbar,
