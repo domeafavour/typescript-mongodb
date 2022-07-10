@@ -11,7 +11,10 @@ export const findAllPosts: Router.IMiddleware = async (ctx) => {
 };
 
 export const createPost: Router.IMiddleware = async (ctx) => {
-  const insertedPost = await postsService.createPost(ctx.request.body);
+  const insertedPost = await postsService.createPost({
+    ...ctx.request.body,
+    author: ctx.session!.currentId,
+  });
 
   ctx.status = 200;
   ctx.body = {
@@ -30,7 +33,10 @@ export const deletePost: Router.IMiddleware = async (ctx) => {
 };
 
 export const updatePost: Router.IMiddleware = async (ctx) => {
-  const editedPost = await postsService.updatePost(ctx.request.body);
+  const editedPost = await postsService.updatePost({
+    ...ctx.request.body,
+    author: ctx.session!.currentId,
+  });
 
   ctx.status = 200;
   ctx.body = {

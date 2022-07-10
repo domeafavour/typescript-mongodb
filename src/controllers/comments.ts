@@ -13,7 +13,10 @@ export const findCommentsByPostId: Router.IMiddleware = async (ctx) => {
 };
 
 export const createComment: Router.IMiddleware = async (ctx) => {
-  const { _id } = await commentsService.createComment(ctx.request.body);
+  const { _id } = await commentsService.createComment({
+    ...ctx.request.body,
+    userId: ctx.session!.currentId,
+  });
 
   ctx.status = 200;
   ctx.body = {
@@ -23,7 +26,10 @@ export const createComment: Router.IMiddleware = async (ctx) => {
 };
 
 export const updateComment: Router.IMiddleware = async (ctx) => {
-  const updated = await commentsService.updateComment(ctx.request.body);
+  const updated = await commentsService.updateComment({
+    ...ctx.request.body,
+    userId: ctx.session!.currentId,
+  });
 
   ctx.status = 200;
   ctx.body = {
@@ -32,7 +38,7 @@ export const updateComment: Router.IMiddleware = async (ctx) => {
 };
 
 export const deleteComment: Router.IMiddleware = async (ctx) => {
-  const deleted = await commentsService.deleteComment(ctx.params.id);
+  const deleted = await commentsService.deleteComment(ctx.request.body.id);
 
   ctx.status = 200;
   ctx.body = {

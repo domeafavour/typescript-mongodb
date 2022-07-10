@@ -1,12 +1,10 @@
 import { ObjectId } from 'mongodb';
-import { CommentVo } from '../models/comment.model';
 import {
   CreatePostDto,
   PostModel,
   PostVo,
   UpdatePostDto,
 } from '../models/post.model';
-import * as commentsService from './comments';
 
 export async function findAllPosts() {
   return await PostModel.aggregate<PostVo>()
@@ -78,14 +76,10 @@ export async function updatePost(dto: UpdatePostDto) {
     .exec();
 }
 
-type PostWithCommentsVo = PostVo & {
-  comments: CommentVo[];
-};
-
 export async function findPostById(
   id: string
-): Promise<PostWithCommentsVo | null> {
-  const posts = await PostModel.aggregate<PostWithCommentsVo>()
+): Promise<PostVo | null> {
+  const posts = await PostModel.aggregate<PostVo>()
     .match({ _id: new ObjectId(id) })
     .lookup({
       from: 'users',
@@ -131,10 +125,5 @@ export async function findPostById(
     return null;
   }
 
-  const comments = await commentsService.findCommentsByPostId(id);
-
-  return {
-    ...posts[0],
-    comments,
-  };
+  return posts[0];
 }

@@ -45,7 +45,7 @@ export const register: Router.IMiddleware = async (ctx) => {
 };
 
 export const fetchCurrent: Router.IMiddleware = async (ctx) => {
-  const user = await userService.fetchCurrent(ctx.params.id);
+  const user = await userService.fetchCurrent(ctx.session!.currentId);
 
   ctx.status = 200;
   ctx.body = {

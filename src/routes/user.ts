@@ -7,6 +7,6 @@ const router = new Router({
 
 router.post('login', login);
 router.post('register', register);
-router.get('current/:id', fetchCurrent);
+router.get('current', fetchCurrent);
 
 export default router;
