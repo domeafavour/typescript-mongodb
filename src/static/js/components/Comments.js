@@ -1,15 +1,104 @@
+import {
+  createComment,
+  deleteComment,
+  fetchComments,
+} from '../services/comments.js';
+import { getCurrentUser } from '../utils/user.js';
+
+const remarkable = new Remarkable({ html: true });
+
 export default {
   props: {
-    list: {
-      type: Array,
-      default: [],
+    postId: {
+      type: String,
     },
   },
   template: `
-    <ul>
-      <li v-for="comment in list" :key="comment.id">
-        {{comment.title}} <small>from <strong>{{comment.user.name}}</strong></small>
-      </li>
-    </ul>
+    <div>
+      <v-list>
+        <template v-for="(comment, index) in htmlComments">
+          <v-list-item two-line :key="comment.id">
+            <v-list-item-avatar color="grey darken-1">
+              </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>@{{comment?.user?.name}}</v-list-item-title>
+              <div class="text--primary" v-html="comment.html"></div>
+            </v-list-item-content>
+            <v-list-item-action v-if="user._id === comment.user.id">
+              <v-icon color="red" @click="removeComment(comment)">mdi-delete</v-icon>
+            </v-list-item-action>
+          </v-list-item>
+          <v-divider
+            v-if="index < list.length - 1"
+            inset
+          />
+        </template>
+      </v-list>
+      <v-container v-if="formVisible">
+        <v-form>
+          <v-textarea
+            clearable
+            clear-icon="mdi-close-circle"
+            label="Leave your comment"
+            v-model="title"
+          />
+          <v-btn
+            color="primary"
+            :loading="loading"
+            @click="submit"
+          >
+            Submit
+          </v-btn>
+          <v-btn @click="formVisible = false">cancel</v-btn>
+        </v-form>
+      </v-container>
+      <v-container v-if="!formVisible">
+        <v-btn @click="formVisible = true">ADD</v-btn>
+      </v-container>
+    </div>
   `,
+  data() {
+    const user = getCurrentUser();
+    return {
+      title: '',
+      list: [],
+      formVisible: false,
+      loading: false,
+      user,
+    };
+  },
+  async mounted() {
+    await this.reloadComments();
+  },
+  computed: {
+    htmlComments() {
+      return this.list.map((comment) => ({
+        ...comment,
+        html: remarkable.render(comment.title),
+      }));
+    },
+  },
+  methods: {
+    async reloadComments() {
+      this.list = await fetchComments(this.postId);
+    },
+    async removeComment(comment) {
+      await deleteComment(comment.id);
+      this.reloadComments();
+    },
+    async submit() {
+      try {
+        this.loading = true;
+        await createComment({
+          postId: this.postId,
+          title: this.title,
+        });
+        this.reloadComments();
+        this.title = '';
+        this.formVisible = false;
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
 };

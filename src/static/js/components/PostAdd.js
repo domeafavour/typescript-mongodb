@@ -1,11 +1,32 @@
+import { createPost } from '../services/posts.js';
+import PostForm from './PostForm.js';
+
 export default {
   name: 'post-add',
   data() {
-    return { values: {} };
+    return {
+      values: {
+        title: '',
+        description: '',
+        content: '',
+      },
+    };
+  },
+  components: {
+    PostForm,
   },
   template: `
-    <div>
-      <h1>ADD POST</h1>
-    </div>
+    <v-card>
+      <v-card-text>
+        <h1>ADD POST</h1>
+      </v-card-text>
+      <post-form :values="values" @submit="submit"/>
+    </v-card>
   `,
+  methods: {
+    async submit() {
+      await createPost(this.values);
+      this.$router.back();
+    },
+  },
 };

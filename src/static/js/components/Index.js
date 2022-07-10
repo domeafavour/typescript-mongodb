@@ -1,24 +1,33 @@
 import { indexRoutes } from '../routes.js';
+import { fetchCurrent } from '../services/user.js';
 import { hasCurrentUser } from '../utils/user.js';
 import SideNav from './SideNav.js';
 import Topbar from './Topbar.js';
 
 export default {
-  data: () => ({ routes: indexRoutes }),
+  data: () => ({ routes: indexRoutes, drawer: null }),
   components: {
     SideNav,
     Topbar,
   },
+  computed: {
+    items() {
+      return this.routes.filter(route => route.menu);
+    }
+  },
   template: `
-    <div class="layout">
-      <div class="left">
-        <side-nav :routes="routes" />
-      </div>
-      <div class="right">
-        <topbar />
-        <router-view />
-      </div>
-    </div>
+    <v-app>
+      <v-app-bar app dark color="blue">
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      </v-app-bar>
+      <side-nav :routes="routes" />
+
+      <v-main>
+        <v-container>
+          <router-view />
+        </v-container>
+      </v-main>
+    </v-app>
   `,
   methods: {
     checkUser() {
@@ -29,6 +38,7 @@ export default {
   },
   mounted() {
     this.checkUser();
+    // fetchCurrent();
   },
   updated() {
     this.checkUser();

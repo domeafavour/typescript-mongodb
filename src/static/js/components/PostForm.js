@@ -14,16 +14,31 @@ export default {
     },
   },
   template: `
-    <form>
-      <div>
-        <label>title</label>
-        <input v-model="formValues.title" />
-      </div>
-      <div>
-        <label>content</label>
-        <textarea v-model="formValues.content"></textarea>
-      </div>
-      <button type="submit" @click.prevent="$emit('submit', formValues)">submit</button>
-    </form>
+    <v-container>
+      <v-form>
+        <v-text-field
+          v-model="formValues.title"
+          label="Title"
+          required
+        />
+        <v-text-field
+          v-model="formValues.description"
+          label="Description"
+          required
+        />
+        <v-textarea
+          clearable
+          clear-icon="mdi-close-circle"
+          label="Content"
+          v-model="formValues.content"
+        />
+        <v-btn
+          color="primary"
+          @click.prevent="$emit('submit', formValues)"
+        >
+          Submit
+        </v-btn>
+      </v-form>
+    </v-container>
   `,
 };

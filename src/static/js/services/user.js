@@ -30,3 +30,11 @@ export async function register(values) {
   });
   return status === 'SUCCESS';
 }
+
+/**
+ * fetch current login user
+ * @returns {Promise<{ name: string; email: string }>}
+ */
+export async function fetchCurrent() {
+  return await fetchJsonData('/user/current');
+}

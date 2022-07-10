@@ -10,10 +10,12 @@ export default {
     PostForm,
   },
   template: `
-    <div>
-      <h1>EDIT POST</h1>
+    <v-card>
+      <v-card-text>
+        <h1>EDIT POST</h1>
+      </v-card-text>
       <post-form :values="values" @submit="onSubmit"/>
-    </div>
+    </v-card>
   `,
   async mounted() {
     this.values = await fetchPostById(this.$router.currentRoute.params.id);
@@ -25,7 +27,6 @@ export default {
         title: formValues.title,
         content: formValues.content,
         description: formValues.description,
-        author: formValues.author.id,
       });
       this.$router.back();
     },
