@@ -40,9 +40,12 @@ export default {
         class="mb-4"
         color="grey darken-1"
         size="64"
-      ></v-avatar>
+      >
+        {{$global.user.name.substr(0, 1)}}
+      </v-avatar>
 
-      <div>{{$global.user.email}}</div>
+      <div class="text--primary">{{$global.user.name}}</div>
+      <div class="text--secondary">{{$global.user.email}}</div>
     </v-sheet>
 
     <v-divider></v-divider>
