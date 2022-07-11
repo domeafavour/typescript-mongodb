@@ -8,9 +8,6 @@ export default {
       default: [],
     },
   },
-  data() {
-    return { drawer: null };
-  },
   computed: {
     items() {
       return this.routes.filter((route) => route.menu);
@@ -29,7 +26,7 @@ export default {
   },
   template: `
   <v-navigation-drawer
-    v-model="drawer"
+    v-model="$global.drawer"
     app
   >
     <v-sheet
@@ -41,7 +38,7 @@ export default {
         color="grey darken-1"
         size="64"
       >
-        {{$global.user.name.substr(0, 1)}}
+        {{$global.user.name?.substr(0, 1)}}
       </v-avatar>
 
       <div class="text--primary">{{$global.user.name}}</div>

@@ -4,7 +4,7 @@ import SideNav from './SideNav.js';
 import Topbar from './Topbar.js';
 
 export default {
-  data: () => ({ routes: indexRoutes, drawer: null }),
+  data: () => ({ routes: indexRoutes }),
   components: {
     SideNav,
     Topbar,
@@ -17,7 +17,7 @@ export default {
   template: `
     <v-app>
       <v-app-bar app dark color="blue">
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
       </v-app-bar>
       <side-nav :routes="routes" />
 
@@ -35,5 +35,10 @@ export default {
     } else {
       this.$router.replace('/login');
     }
+  },
+  methods: {
+    toggleDrawer() {
+      this.$global.drawer = !this.$global.drawer;
+    },
   },
 };
