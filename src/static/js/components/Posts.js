@@ -48,7 +48,10 @@ export default {
     return { posts: [] };
   },
   async mounted() {
-    this.posts = await fetchPosts();
+    const { success, data: posts } = await fetchPosts();
+    if (success) {
+      this.posts = posts;
+    }
   },
   methods: {
     viewPost(post) {

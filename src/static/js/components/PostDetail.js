@@ -34,7 +34,13 @@ export default {
     };
   },
   async mounted() {
-    this.detail = await fetchPostById(this.$router.currentRoute.params.id);
+    const { success, data } = await fetchPostById(
+      this.$router.currentRoute.params.id
+    );
+
+    if (success) {
+      this.detail = data;
+    }
   },
   computed: {
     postHtml() {

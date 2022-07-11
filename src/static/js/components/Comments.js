@@ -79,7 +79,10 @@ export default {
   },
   methods: {
     async reloadComments() {
-      this.list = await fetchComments(this.postId);
+      const { success, data: list } = await fetchComments(this.postId);
+      if (success) {
+        this.list = list;
+      }
     },
     async removeComment(comment) {
       await deleteComment(comment.id);

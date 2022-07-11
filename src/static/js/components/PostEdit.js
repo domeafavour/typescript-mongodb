@@ -18,7 +18,12 @@ export default {
     </v-card>
   `,
   async mounted() {
-    this.values = await fetchPostById(this.$router.currentRoute.params.id);
+    const { success, data } = await fetchPostById(
+      this.$router.currentRoute.params.id
+    );
+    if (success) {
+      this.values = data;
+    }
   },
   methods: {
     async onSubmit(formValues) {
