@@ -27,11 +27,26 @@ export type UpdatePostDto = CreatePostDto &
   }>;
 
 export const postSchema = new mongoose.Schema({
-  content: String,
-  description: String,
-  title: String,
-  authorId: mongoose.Types.ObjectId,
-  createdTime: Date,
+  content: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  authorId: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
+  createdTime: {
+    type: Date,
+    required: true,
+  },
 });
 
 export const PostModel = mongoose.model('Post', postSchema);
