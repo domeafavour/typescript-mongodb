@@ -54,7 +54,7 @@ export async function findAllPosts() {
       commentsCount: {
         $reduce: {
           input: '$comments',
-          initialValue: 1,
+          initialValue: 0,
           in: {
             $add: ['$$value', 1],
           },
