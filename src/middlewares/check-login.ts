@@ -1,14 +1,19 @@
 import Application from 'koa';
 
 export const checkLogin: Application.Middleware = async (ctx, next) => {
-  if (ctx.cookie.id) {
+  if (ctx.session?.currentId) {
     await next();
   } else {
-    if (ctx.url !== '/views/login') {
-      ctx.redirect('/views/login');
+    if (ctx.path === '/user/login' || ctx.path === '/user/register') {
       await next();
     } else {
-      await next();
+      ctx.status = 200;
+      ctx.body = {
+        code: 99999,
+        success: false,
+        data: null,
+        message: 'LOGIN EXPIRED',
+      };
     }
   }
 };

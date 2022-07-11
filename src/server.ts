@@ -9,6 +9,7 @@ import cors from 'koa2-cors';
 import path from 'path';
 import { config } from './config';
 import connectMongoDb from './connectMongoDb';
+import { checkLogin } from './middlewares/check-login';
 import commentsRoutes from './routes/comments';
 import postsRoutes from './routes/posts';
 import userRoutes from './routes/user';
@@ -33,6 +34,8 @@ app.use(cookie());
 app.use(cors({ origin: '*' }));
 app.use(KoaLogger());
 app.use(serve(__dirname + '/static'));
+
+app.use(checkLogin);
 
 // use routes
 app.use(postsRoutes.routes());
