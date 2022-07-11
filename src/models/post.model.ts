@@ -11,6 +11,7 @@ export type PostVo = {
     name: string;
     email: string;
   };
+  commentsCount: number;
 };
 
 export type CreatePostDto = Readonly<{

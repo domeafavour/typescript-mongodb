@@ -14,6 +14,12 @@ export async function findAllPosts() {
       foreignField: '_id',
       as: 'authors',
     })
+    .lookup({
+      from: 'comments',
+      localField: '_id',
+      foreignField: 'postId',
+      as: 'comments',
+    })
     .project({
       id: {
         $toString: '$_id',
@@ -44,6 +50,15 @@ export async function findAllPosts() {
             },
           },
         ],
+      },
+      commentsCount: {
+        $reduce: {
+          input: '$comments',
+          initialValue: 1,
+          in: {
+            $add: ['$$value', 1],
+          },
+        },
       },
     })
     .exec();
@@ -76,9 +91,7 @@ export async function updatePost(dto: UpdatePostDto) {
     .exec();
 }
 
-export async function findPostById(
-  id: string
-): Promise<PostVo | null> {
+export async function findPostById(id: string): Promise<PostVo | null> {
   const posts = await PostModel.aggregate<PostVo>()
     .match({ _id: new ObjectId(id) })
     .lookup({
