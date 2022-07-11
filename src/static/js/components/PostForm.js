@@ -1,9 +1,14 @@
+import MarkdownEditor from './MarkdownEditor.js';
+
 export default {
   name: 'post-form',
   props: {
     values: {
       type: Object,
     },
+  },
+  components: {
+    MarkdownEditor,
   },
   data() {
     return { formValues: this.values };
@@ -26,7 +31,7 @@ export default {
           label="Description"
           required
         />
-        <v-textarea
+        <markdown-editor
           clearable
           clear-icon="mdi-close-circle"
           label="Content"
