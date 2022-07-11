@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import {
   CurrentUserVo,
   LoginUserDto,
@@ -32,12 +33,46 @@ export async function register(dto: RegisterUserDto): Promise<RegisterStatus> {
 }
 
 export async function fetchCurrent(id: string): Promise<CurrentUserVo | null> {
-  return await UserModel.findById<CurrentUserVo>(id, {
-    id: {
-      $toString: '$_id',
-    },
-    _id: 0,
-    name: 1,
-    email: 1,
-  });
+  const users = await UserModel.aggregate<CurrentUserVo>()
+    .match({ _id: new ObjectId(id) })
+    .lookup({
+      from: 'posts',
+      localField: '_id',
+      foreignField: 'authorId',
+      as: 'posts',
+    })
+    .project({
+      id: {
+        $toString: '$_id',
+      },
+      _id: 0,
+      name: 1,
+      email: 1,
+      posts: {
+        $map: {
+          input: '$posts',
+          as: 'post',
+          in: {
+            id: {
+              $toString: '$$post._id',
+            },
+            content: '$$post.content',
+            description: '$$post.description',
+            title: '$$post.title',
+            createdTime: {
+              $dateToString: {
+                date: '$$post.createdTime',
+                format: '%Y-%m-%d %H:%M:%S',
+              },
+            },
+          },
+        },
+      },
+    })
+    .exec();
+
+  if (!users.length) {
+    return null;
+  }
+  return users[0];
 }

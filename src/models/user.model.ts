@@ -1,4 +1,5 @@
 import mongoose, { ValidatorProps } from 'mongoose';
+import { PostVo } from './post.model';
 
 export type LoginUserDto = {
   email: string;
@@ -9,6 +10,7 @@ export type CurrentUserVo = {
   id: string;
   email: string;
   password: string;
+  posts: Omit<PostVo, 'author'>[];
 };
 
 export type LoginStatus = 'SUCCESS' | 'WRONG_ACCOUNT' | 'WRONG_PASSWORD';
