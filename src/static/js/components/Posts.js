@@ -2,8 +2,18 @@ import { fetchPosts } from './../services/posts.js';
 
 export default {
   template: `
-    <div>
-      <router-link to="/posts/add">New Post</router-link>
+    <div style="position: relative">
+      <v-btn
+        fixed
+        dark
+        fab
+        bottom
+        right
+        color="pink"
+        @click="$router.push('/posts/add')"
+      >
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
       <v-card>
         <v-list>
           <template v-for="(post, index) in posts">
