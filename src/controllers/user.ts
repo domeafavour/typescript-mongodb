@@ -53,3 +53,13 @@ export const fetchCurrent: Router.IMiddleware = async (ctx) => {
     data: user,
   };
 };
+
+export const fetchUser: Router.IMiddleware = async (ctx) => {
+  const user = await userService.fetchCurrent(ctx.params.id);
+  
+  ctx.status = 200;
+  ctx.body = {
+    success: !!user,
+    data: user,
+  };
+};
