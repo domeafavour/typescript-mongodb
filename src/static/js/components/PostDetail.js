@@ -1,9 +1,6 @@
 import { fetchPostById } from '../services/posts.js';
+import { render } from '../utils/markdown.js';
 import Comments from './Comments.js';
-
-const remarkable = new Remarkable({
-  html: true,
-});
 
 export default {
   template: `
@@ -41,9 +38,7 @@ export default {
   },
   computed: {
     postHtml() {
-      return this.detail
-        ? remarkable.render(this.detail.content)
-        : 'loading...';
+      return this.detail ? render(this.detail.content) : 'loading...';
     },
   },
 };

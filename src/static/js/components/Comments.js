@@ -3,9 +3,8 @@ import {
   deleteComment,
   fetchComments,
 } from '../services/comments.js';
+import { render } from '../utils/markdown.js';
 import { getCurrentUser } from '../utils/user.js';
-
-const remarkable = new Remarkable({ html: true });
 
 export default {
   props: {
@@ -74,7 +73,7 @@ export default {
     htmlComments() {
       return this.list.map((comment) => ({
         ...comment,
-        html: remarkable.render(comment.title),
+        html: render(comment.title),
       }));
     },
   },
