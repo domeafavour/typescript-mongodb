@@ -8,7 +8,7 @@ export default {
     },
     value: {
       type: String,
-      value: '',
+      default: '',
     },
   },
   template: `
