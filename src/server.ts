@@ -10,6 +10,7 @@ import path from 'path';
 import { config } from './config';
 import connectMongoDb from './connectMongoDb';
 import { checkLogin } from './middlewares/check-login';
+import { withoutPrefix } from './middlewares/without-prefix';
 import commentsRoutes from './routes/comments';
 import postsRoutes from './routes/posts';
 import userRoutes from './routes/user';
@@ -35,6 +36,7 @@ app.use(cors({ origin: '*' }));
 app.use(KoaLogger());
 app.use(serve(__dirname + '/static'));
 
+app.use(withoutPrefix('/api'));
 app.use(checkLogin);
 
 // use routes
