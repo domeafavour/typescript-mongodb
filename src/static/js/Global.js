@@ -1,6 +1,9 @@
 const Global = new Vue({
   data: () => ({
-    user: {},
+    user: {
+      posts: [],
+    },
+    drawer: true,
   }),
 });
 
