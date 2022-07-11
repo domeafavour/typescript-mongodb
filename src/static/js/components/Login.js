@@ -8,19 +8,39 @@ export default {
     password: '',
   }),
   template: `
-    <form>
-      <div>
-        <label for="email">email</label>
-        <input id="email" type="email" name="email" v-model="email"  />
-      </div>
-      <div>
-        <label for="password">password</label>
-        <input id="password" type="password" name="password" v-model="password" />
-      </div>
-      <div>
-        <button type="submit" @click.prevent="handleLogin">login</button>
-      </div>
-    </form>
+  <v-app>
+    <v-container>
+      <v-form>
+        <v-card outlined>
+          <v-card-title>Login</v-card-title>
+          <v-container>
+            <v-text-field
+              label="Email"
+              v-model="email"
+              type="email"
+              name="email"
+            />
+            <v-text-field
+              label="Password"
+              v-model="password"
+              type="password"
+              name="password"
+            />
+          </v-container>
+          <v-card-actions>
+            <v-btn
+              text
+              color="primary" 
+              type="submit" 
+              @click.prevent="handleLogin"
+            >
+              Login
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
+    </v-container>
+  </v-app>
   `,
   methods: {
     resetForm() {
@@ -30,11 +50,11 @@ export default {
     async handleLogin() {
       try {
         this.loading = true;
-        const user = await login({
+        const { success, data: user } = await login({
           email: this.email,
           password: this.password,
         });
-        if (user) {
+        if (success) {
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.$router.replace('/');
         } else {
