@@ -3,6 +3,7 @@ import {
   deleteComment,
   fetchComments,
 } from '../services/comments.js';
+import ItemAvatar from './ItemAvatar.js';
 import { render } from '../utils/markdown.js';
 
 export default {
@@ -11,13 +12,15 @@ export default {
       type: String,
     },
   },
+  components: {
+    ItemAvatar,
+  },
   template: `
     <div>
       <v-list>
         <template v-for="(comment, index) in htmlComments">
           <v-list-item two-line :key="comment.id">
-            <v-list-item-avatar color="grey darken-1">
-              </v-list-item-avatar>
+            <item-avatar :user="comment.user" />
             <v-list-item-content>
               <v-list-item-title>@{{comment?.user?.name}}</v-list-item-title>
               <div class="text--primary" v-html="comment.html"></div>
