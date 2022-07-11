@@ -1,4 +1,5 @@
 import {
+  CurrentUserVo,
   LoginUserDto,
   RegisterStatus,
   RegisterUserDto,
@@ -30,6 +31,13 @@ export async function register(dto: RegisterUserDto): Promise<RegisterStatus> {
   return 'SUCCESS';
 }
 
-export async function fetchCurrent(id: string) {
-  return await UserModel.findById(id);
+export async function fetchCurrent(id: string): Promise<CurrentUserVo | null> {
+  return await UserModel.findById<CurrentUserVo>(id, {
+    id: {
+      $toString: '$_id',
+    },
+    _id: 0,
+    name: 1,
+    email: 1,
+  });
 }

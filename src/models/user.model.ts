@@ -5,6 +5,12 @@ export type LoginUserDto = {
   password: string;
 };
 
+export type CurrentUserVo = {
+  id: string;
+  email: string;
+  password: string;
+};
+
 export type LoginStatus = 'SUCCESS' | 'WRONG_ACCOUNT' | 'WRONG_PASSWORD';
 
 export type RegisterStatus = 'SUCCESS' | 'ACCOUNT_EXISTS';
