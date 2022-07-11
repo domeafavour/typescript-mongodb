@@ -4,7 +4,6 @@ import {
   fetchComments,
 } from '../services/comments.js';
 import { render } from '../utils/markdown.js';
-import { getCurrentUser } from '../utils/user.js';
 
 export default {
   props: {
@@ -23,7 +22,7 @@ export default {
               <v-list-item-title>@{{comment?.user?.name}}</v-list-item-title>
               <div class="text--primary" v-html="comment.html"></div>
             </v-list-item-content>
-            <v-list-item-action v-if="user._id === comment.user.id">
+            <v-list-item-action v-if="$global.user.id === comment.user.id">
               <v-icon color="red" @click="removeComment(comment)">mdi-delete</v-icon>
             </v-list-item-action>
           </v-list-item>
@@ -57,13 +56,11 @@ export default {
     </div>
   `,
   data() {
-    const user = getCurrentUser();
     return {
       title: '',
       list: [],
       formVisible: false,
       loading: false,
-      user,
     };
   },
   async mounted() {

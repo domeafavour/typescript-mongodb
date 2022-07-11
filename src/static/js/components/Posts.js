@@ -1,4 +1,3 @@
-import { getCurrentUser } from '../utils/user.js';
 import { fetchPosts } from './../services/posts.js';
 
 export default {
@@ -20,7 +19,7 @@ export default {
                   <v-col>
                     <v-btn @click="viewPost(post)">view</v-btn>
                   </v-col>
-                  <v-col v-if="user._id === post.author.id">
+                  <v-col v-if="$global.user.id === post.author.id">
                     <v-btn color="success" @click="editPost(post)">edit</v-btn>
                   </v-col>
                 </v-row>
@@ -37,8 +36,7 @@ export default {
     </div>
   `,
   data() {
-    const user = getCurrentUser();
-    return { posts: [], user };
+    return { posts: [] };
   },
   async mounted() {
     this.posts = await fetchPosts();
