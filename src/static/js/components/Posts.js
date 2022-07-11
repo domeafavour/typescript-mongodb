@@ -1,4 +1,5 @@
 import { fetchPosts } from './../services/posts.js';
+import ItemAvatar from './ItemAvatar.js';
 
 export default {
   template: `
@@ -17,18 +18,14 @@ export default {
       <v-card>
         <v-list>
           <template v-for="(post, index) in posts">
-            <v-list-item two-line :key="post.id">
-              <v-list-item-avatar color="grey darken-1">
-              </v-list-item-avatar>
+            <v-list-item two-line :key="post.id" link @click="viewPost(post)">
+              <item-avatar :user="post.author" />
               <v-list-item-content>
-                <v-list-item-title>{{post.title}}</v-list-item-title>
+                <v-list-item-title link>{{post.title}}</v-list-item-title>
                 <v-list-item-subtitle>{{post.description}}</v-list-item-subtitle>
               </v-list-item-content>
               <v-list-item-action>
                 <v-row>
-                  <v-col>
-                    <v-btn @click="viewPost(post)">view</v-btn>
-                  </v-col>
                   <v-col v-if="$global.user.id === post.author.id">
                     <v-btn color="success" @click="editPost(post)">edit</v-btn>
                   </v-col>
@@ -45,6 +42,9 @@ export default {
       </v-card>
     </div>
   `,
+  components: {
+    ItemAvatar,
+  },
   data() {
     return { posts: [] };
   },
