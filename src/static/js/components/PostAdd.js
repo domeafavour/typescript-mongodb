@@ -17,9 +17,9 @@ export default {
   },
   template: `
     <v-card>
-      <v-card-text>
-        <h1>ADD POST</h1>
-      </v-card-text>
+      <v-card-title>
+        ADD POST
+      </v-card-title>
       <post-form :values="values" @submit="submit"/>
     </v-card>
   `,
