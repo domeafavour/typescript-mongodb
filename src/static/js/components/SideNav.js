@@ -1,4 +1,4 @@
-import { getCurrentUser, removeCurrentUser } from '../utils/user.js';
+import { removeCurrentUser } from '../utils/user.js';
 
 export default {
   name: 'side-nav',
@@ -9,7 +9,7 @@ export default {
     },
   },
   data() {
-    return { user: getCurrentUser(), drawer: null };
+    return { drawer: null };
   },
   computed: {
     items() {
@@ -25,7 +25,7 @@ export default {
       if (this.$router.currentRoute.path !== route.path) {
         this.$router.push(route.path);
       }
-    }
+    },
   },
   template: `
   <v-navigation-drawer
@@ -42,7 +42,7 @@ export default {
         size="64"
       ></v-avatar>
 
-      <div>{{user.email}}</div>
+      <div>{{$global.user.email}}</div>
     </v-sheet>
 
     <v-divider></v-divider>

@@ -12,8 +12,8 @@ export default {
   },
   computed: {
     items() {
-      return this.routes.filter(route => route.menu);
-    }
+      return this.routes.filter((route) => route.menu);
+    },
   },
   template: `
     <v-app>
@@ -36,11 +36,15 @@ export default {
       }
     },
   },
-  mounted() {
-    this.checkUser();
-    // fetchCurrent();
+  async mounted() {
+    this.$global.user = await fetchCurrent();
   },
   updated() {
     this.checkUser();
+  },
+  watch: {
+    '$global.user'() {
+      // console.log('$global.user changed', user);
+    },
   },
 };
