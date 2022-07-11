@@ -18,6 +18,11 @@ export default {
     <v-app>
       <v-app-bar app dark color="blue">
         <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+        <v-spacer></v-spacer>
+
+        <v-btn icon @click="logout">
+          <v-icon>mdi-power</v-icon>
+        </v-btn>
       </v-app-bar>
       <side-nav :routes="routes" />
 
@@ -29,8 +34,8 @@ export default {
     </v-app>
   `,
   async mounted() {
-    const user = await fetchCurrent();
-    if (user) {
+    const { success, data: user } = await fetchCurrent();
+    if (success) {
       this.$global.user = user;
     } else {
       this.$router.replace('/login');
@@ -39,6 +44,9 @@ export default {
   methods: {
     toggleDrawer() {
       this.$global.drawer = !this.$global.drawer;
+    },
+    logout() {
+      this.$router.replace('/login');
     },
   },
 };
