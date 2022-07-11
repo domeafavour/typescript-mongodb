@@ -8,6 +8,8 @@ export const findCommentsByPostId: Router.IMiddleware = async (ctx) => {
 
   ctx.status = 200;
   ctx.body = {
+    code: 200,
+    message: null,
     data: comments,
   };
 };
@@ -20,8 +22,10 @@ export const createComment: Router.IMiddleware = async (ctx) => {
 
   ctx.status = 200;
   ctx.body = {
+    code: 200,
     status: 'success',
     data: _id.toString(),
+    message: null,
   };
 };
 
@@ -33,6 +37,8 @@ export const updateComment: Router.IMiddleware = async (ctx) => {
 
   ctx.status = 200;
   ctx.body = {
+    code: 200,
+    message: null,
     data: updated,
   };
 };
@@ -43,5 +49,7 @@ export const deleteComment: Router.IMiddleware = async (ctx) => {
   ctx.status = 200;
   ctx.body = {
     data: deleted,
+    code: 200,
+    message: null,
   };
 };

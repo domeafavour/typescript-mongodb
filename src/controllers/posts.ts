@@ -5,30 +5,44 @@ export const findAllPosts: Router.IMiddleware = async (ctx) => {
   const posts = await postsService.findAllPosts();
   ctx.status = 200;
   ctx.body = {
+    code: 200,
+    message: null,
     status: 'success',
     data: posts,
   };
 };
 
 export const createPost: Router.IMiddleware = async (ctx) => {
-  const insertedPost = await postsService.createPost({
-    ...ctx.request.body,
-    author: ctx.session!.currentId,
-  });
+  try {
+    const insertedPost = await postsService.createPost({
+      ...ctx.request.body,
+      author: ctx.session!.currentId,
+    });
 
-  ctx.status = 200;
-  ctx.body = {
-    status: 'success',
-    data: insertedPost,
-  };
+    ctx.body = {
+      code: 200,
+      status: 'success',
+      data: insertedPost,
+      message: null,
+    };
+  } catch (error) {
+    const err = (error as any).message;
+    ctx.body = {
+      code: 500,
+      data: null,
+      message: err,
+    };
+  }
 };
 
 export const deletePost: Router.IMiddleware = async (ctx) => {
   const deletedPost = await postsService.deletePost(ctx.request.body.id);
   ctx.status = 200;
   ctx.body = {
+    code: 200,
     status: 'success',
     data: deletedPost,
+    message: null,
   };
 };
 
@@ -41,7 +55,9 @@ export const updatePost: Router.IMiddleware = async (ctx) => {
   ctx.status = 200;
   ctx.body = {
     status: 'success',
+    code: 200,
     data: editedPost,
+    messgae: null,
   };
 };
 
@@ -50,14 +66,18 @@ export const findPostById: Router.IMiddleware = async (ctx) => {
   if (!post) {
     ctx.status = 404;
     ctx.body = {
+      code: 502,
       status: 'fail',
       data: null,
+      message: null,
     };
   } else {
     ctx.status = 200;
     ctx.body = {
+      code: 200,
       status: 'success',
       data: post,
+      message: null,
     };
   }
 };
