@@ -54,7 +54,7 @@ export const indexRoutes = [
     path: '/account',
     title: 'Account',
     component: Account,
-    menu: true,
+    menu: false,
   },
 ];
 
