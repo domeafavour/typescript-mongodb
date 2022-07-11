@@ -1,9 +1,18 @@
 import { fetchJsonData } from './base.js';
 
+/**
+ * fetch all posts
+ * @returns {Promise<import('./base.js').FetchResponse<import('./typings.js').Post[]>>}
+ */
 export async function fetchPosts() {
   return fetchJsonData('/posts/list');
 }
 
+/**
+ * fetch post by post id
+ * @param {string} id 
+ * @returns {import('./base.js').PromiseResponse<import('./typings.js').Post>}
+ */
 export async function fetchPostById(id) {
   return fetchJsonData(`/posts/${id}`);
 }

@@ -1,23 +1,27 @@
 import { fetchJsonData } from './base.js';
+
+/**
+ * @typedef {import('./typings.js').User} User
+ */
+
 /**
  * login
- * @param {{ email: string; password: string }} values
- * @returns {Promise<{ name: string; email: string } | null>}
+ * @param {Omit<User, 'id'>} values
+ * @returns {import('./base.js').PromiseResponse<User>}
  */
 export async function login(values) {
-  const user = await fetchJsonData('/user/login', {
+  return fetchJsonData('/user/login', {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(values),
   });
-  return user;
 }
 
 /**
  * register
- * @param {{ email: string; name: string; password: string }} values
+ * @param {Omit<User, 'id'> & { password: string }} values
  * @returns {Promise<boolean>}
  */
 export async function register(values) {
@@ -33,7 +37,7 @@ export async function register(values) {
 
 /**
  * fetch current login user
- * @returns {Promise<{ name: string; email: string }>}
+ * @returns {import('./base.js').PromiseResponse<User>}
  */
 export async function fetchCurrent() {
   return await fetchJsonData('/user/current');
