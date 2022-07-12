@@ -23,6 +23,9 @@ export default {
             <v-btn text color="primary" type="submit" @click.prevent="handleRegister">
               Register
             </v-btn>
+            <v-btn text type="submit" @click.prevent="$router.push('/login')">
+              Already have an account
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
