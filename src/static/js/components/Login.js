@@ -36,6 +36,12 @@ export default {
             >
               Login
             </v-btn>
+            <v-btn
+              text
+              @click.prevent="$router.push('/register')"
+            >
+              New Account
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
