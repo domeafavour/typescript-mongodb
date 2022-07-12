@@ -7,6 +7,7 @@ Create a NodeJS API with Koa, TypeScript and Mongodb
 - `users`
 - `posts`
 - `comments`
+- `files`
 
 ## Documents
 
