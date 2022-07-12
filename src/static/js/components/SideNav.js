@@ -32,6 +32,8 @@ export default {
     <v-sheet
       color="grey lighten-4"
       class="pa-4"
+      style="cursor: pointer"
+      @click="pushRoute({ path: '/account' })"
     >
       <v-avatar
         class="mb-4"
