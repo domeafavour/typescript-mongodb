@@ -8,9 +8,14 @@ export type LoginUserDto = {
 
 export type CurrentUserVo = {
   id: string;
+  name: string;
   email: string;
   password: string;
   posts: Omit<PostVo, 'author'>[];
+};
+
+export type UpdateCurrentUserDto = Pick<RegisterUserDto, 'email' | 'name'> & {
+  id: string;
 };
 
 export type LoginStatus = 'SUCCESS' | 'WRONG_ACCOUNT' | 'WRONG_PASSWORD';

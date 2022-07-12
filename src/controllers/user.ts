@@ -1,5 +1,9 @@
 import Router from 'koa-router';
-import { LoginUserDto, RegisterUserDto } from '../models/user.model';
+import {
+  LoginUserDto,
+  RegisterUserDto,
+  UpdateCurrentUserDto,
+} from '../models/user.model';
 import * as userService from './../services/user';
 
 export const login: Router.IMiddleware = async (ctx) => {
@@ -61,6 +65,29 @@ export const fetchCurrent: Router.IMiddleware = async (ctx) => {
     data: user,
     message: null,
   };
+};
+
+export const updateCurrent: Router.IMiddleware = async (ctx) => {
+  try {
+    const user = ctx.request.body as Omit<UpdateCurrentUserDto, 'id'>;
+    const updatedUser = await userService.updateCurrent({
+      email: user.email,
+      name: user.name,
+      id: ctx.session!.currentId,
+    });
+
+    ctx.body = {
+      code: 200,
+      data: updatedUser?.toObject(),
+      message: null,
+    };
+  } catch (error) {
+    ctx.body = {
+      code: 505,
+      data: null,
+      message: (error as ServerError).message,
+    };
+  }
 };
 
 export const fetchUser: Router.IMiddleware = async (ctx) => {

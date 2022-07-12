@@ -4,7 +4,8 @@ import {
   LoginUserDto,
   RegisterStatus,
   RegisterUserDto,
-  UserModel,
+  UpdateCurrentUserDto,
+  UserModel
 } from '../models/user.model';
 
 export async function login(dto: LoginUserDto) {
@@ -75,4 +76,13 @@ export async function fetchCurrent(id: string): Promise<CurrentUserVo | null> {
     return null;
   }
   return users[0];
+}
+
+export async function updateCurrent(dto: UpdateCurrentUserDto) {
+  return UserModel.findByIdAndUpdate(dto.id)
+    .set({
+      name: dto.name,
+      email: dto.email,
+    })
+    .exec();
 }

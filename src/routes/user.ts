@@ -1,5 +1,11 @@
 import Router from 'koa-router';
-import { fetchCurrent, fetchUser, login, register } from '../controllers/user';
+import {
+  fetchCurrent,
+  fetchUser,
+  login,
+  register,
+  updateCurrent,
+} from '../controllers/user';
 
 const router = new Router({
   prefix: '/user/',
@@ -8,6 +14,7 @@ const router = new Router({
 router.post('login', login);
 router.post('register', register);
 router.get('current', fetchCurrent);
-router.get(':id', fetchUser)
+router.post('update', updateCurrent);
+router.get(':id', fetchUser);
 
 export default router;
