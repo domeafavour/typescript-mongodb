@@ -31,7 +31,6 @@ const PORT = config.port;
 
 app.use(session(app));
 app.keys = ['session'];
-app.use(bodyParser);
 app.use(cookie());
 app.use(cors({ origin: '*' }));
 app.use(KoaLogger());
@@ -39,6 +38,8 @@ app.use(serve(__dirname + '/static'));
 
 app.use(withoutPrefix('/api'));
 app.use(checkLogin);
+
+app.use(bodyParser);
 
 // use routes
 app.use(postsRoutes.routes());
