@@ -36,14 +36,24 @@ export const createPost: Router.IMiddleware = async (ctx) => {
 };
 
 export const deletePost: Router.IMiddleware = async (ctx) => {
-  const deletedPost = await postsService.deletePost(ctx.request.body.id);
-  ctx.status = 200;
-  ctx.body = {
-    code: 200,
-    status: 'success',
-    data: deletedPost,
-    message: null,
-  };
+  try {
+    const deletedPost = await postsService.deletePost(
+      ctx.request.body.id,
+      ctx.session!.currentId
+    );
+
+    ctx.body = {
+      code: 200,
+      data: deletedPost,
+      message: null,
+    };
+  } catch (error) {
+    ctx.body = {
+      code: 500,
+      data: null,
+      message: (error as any).message,
+    };
+  }
 };
 
 export const updatePost: Router.IMiddleware = async (ctx) => {

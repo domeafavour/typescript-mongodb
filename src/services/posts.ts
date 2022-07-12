@@ -76,7 +76,16 @@ export async function createPost(dto: CreatePostDto) {
   return await postModel.save();
 }
 
-export async function deletePost(postId: string) {
+export async function deletePost(postId: string, userId: string) {
+  const post = await PostModel.findById(postId).exec();
+  if (!post) {
+    throw new Error(`No such a post with id: ${postId}`);
+  }
+  if (post.authorId.toString() !== userId) {
+    throw new Error(
+      'Cannot delete the post when the user wants to delete is not the author of the post'
+    );
+  }
   return await PostModel.findByIdAndDelete(postId).exec();
 }
 
