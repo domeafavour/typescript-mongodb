@@ -57,18 +57,24 @@ export const deletePost: Router.IMiddleware = async (ctx) => {
 };
 
 export const updatePost: Router.IMiddleware = async (ctx) => {
-  const editedPost = await postsService.updatePost({
-    ...ctx.request.body,
-    author: ctx.session!.currentId,
-  });
+  try {
+    const editedPost = await postsService.updatePost({
+      ...ctx.request.body,
+      author: ctx.session!.currentId,
+    });
 
-  ctx.status = 200;
-  ctx.body = {
-    status: 'success',
-    code: 200,
-    data: editedPost,
-    messgae: null,
-  };
+    ctx.body = {
+      code: 200,
+      data: editedPost,
+      messgae: null,
+    };
+  } catch (error) {
+    ctx.body = {
+      code: 500,
+      data: null,
+      message: (error as any).message,
+    };
+  }
 };
 
 export const findPostById: Router.IMiddleware = async (ctx) => {

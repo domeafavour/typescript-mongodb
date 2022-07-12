@@ -90,6 +90,15 @@ export async function deletePost(postId: string, userId: string) {
 }
 
 export async function updatePost(dto: UpdatePostDto) {
+  const post = await PostModel.findById(dto.id);
+  if (!post) {
+    throw new Error(`No such a post with id: ${dto.id}`);
+  }
+  if (post.authorId.toString() !== dto.author) {
+    throw new Error(
+      'Cannot update the post when the user wants to update is not the author of the post'
+    );
+  }
   return await PostModel.findByIdAndUpdate(dto.id)
     .set({
       authorId: new ObjectId(dto.author),
