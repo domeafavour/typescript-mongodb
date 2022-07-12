@@ -1,5 +1,4 @@
 import Koa from 'koa';
-import bodyParser from 'koa-bodyparser';
 import cookie from 'koa-cookie';
 import render from 'koa-ejs';
 import KoaLogger from 'koa-logger';
@@ -9,9 +8,11 @@ import cors from 'koa2-cors';
 import path from 'path';
 import { config } from './config';
 import connectMongoDb from './connectMongoDb';
+import { bodyParser } from './middlewares/body-parser';
 import { checkLogin } from './middlewares/check-login';
 import { withoutPrefix } from './middlewares/without-prefix';
 import commentsRoutes from './routes/comments';
+import filesRoutes from './routes/files';
 import postsRoutes from './routes/posts';
 import userRoutes from './routes/user';
 
@@ -30,7 +31,7 @@ const PORT = config.port;
 
 app.use(session(app));
 app.keys = ['session'];
-app.use(bodyParser());
+app.use(bodyParser);
 app.use(cookie());
 app.use(cors({ origin: '*' }));
 app.use(KoaLogger());
@@ -43,6 +44,7 @@ app.use(checkLogin);
 app.use(postsRoutes.routes());
 app.use(commentsRoutes.routes());
 app.use(userRoutes.routes());
+app.use(filesRoutes.routes());
 
 connectMongoDb().catch(console.dir);
 
