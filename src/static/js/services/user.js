@@ -42,3 +42,18 @@ export async function register(values) {
 export async function fetchCurrent() {
   return await fetchJsonData('/user/current');
 }
+
+/**
+ * update current user
+ * @param {{ email: string; name: string }} values
+ * @returns {import('./base.js').PromiseResponse<any>}
+ */
+export async function updateCurrent(values) {
+  return fetchJsonData('/user/update', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values),
+  });
+}
