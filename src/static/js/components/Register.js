@@ -8,24 +8,26 @@ export default {
     password: '',
     name: '',
   }),
-  template: `
-    <form>
-      <div>
-        <label for="email">email</label>
-        <input id="email" type="email" name="email" v-model="email"  />
-      </div>
-      <div>
-        <label for="name">name</label>
-        <input id="name" name="name" v-model="name"  />
-      </div>
-      <div>
-        <label for="password">password</label>
-        <input id="password" type="password" name="password" v-model="password" />
-      </div>
-      <div>
-        <button type="submit" @click.prevent="handleRegister">register</button>
-      </div>
-    </form>
+  template: `  
+  <v-app>
+    <v-container>
+      <v-form>
+        <v-card outlined>
+          <v-card-title>Register</v-card-title>
+          <v-container>
+            <v-text-field label="Email" v-model="email" type="email" name="email" />
+            <v-text-field label="Name" v-model="name" name="name" />
+            <v-text-field label="Password" v-model="password" type="password" name="password" />
+          </v-container>
+          <v-card-actions>
+            <v-btn text color="primary" type="submit" @click.prevent="handleRegister">
+              Register
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
+    </v-container>
+  </v-app>
   `,
   methods: {
     resetForm() {
@@ -42,7 +44,7 @@ export default {
           password: this.password,
         });
         if (success) {
-          this.$router.replace('/');
+          this.$router.replace('/login');
         } else {
           this.resetForm();
         }

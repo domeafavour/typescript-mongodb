@@ -25,14 +25,14 @@ export async function login(values) {
  * @returns {Promise<boolean>}
  */
 export async function register(values) {
-  const status = await fetchJsonData('/user/register', {
+  const { code } = await fetchJsonData('/user/register', {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(values),
   });
-  return status === 'SUCCESS';
+  return code === 200;
 }
 
 /**
