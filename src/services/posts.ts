@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { ObjectId } from 'mongodb';
 import {
   CreatePostDto,
@@ -78,27 +79,25 @@ export async function createPost(dto: CreatePostDto) {
 
 export async function deletePost(postId: string, userId: string) {
   const post = await PostModel.findById(postId).exec();
-  if (!post) {
-    throw new Error(`No such a post with id: ${postId}`);
-  }
-  if (post.authorId.toString() !== userId) {
-    throw new Error(
-      'Cannot delete the post when the user wants to delete is not the author of the post'
-    );
-  }
+
+  assert(!!post, `No such a post with id: ${postId}`);
+  assert(
+    post.authorId.toString() === userId,
+    'Cannot delete the post when the user wants to delete is not the author of the post'
+  );
+
   return await PostModel.findByIdAndDelete(postId).exec();
 }
 
 export async function updatePost(dto: UpdatePostDto) {
   const post = await PostModel.findById(dto.id);
-  if (!post) {
-    throw new Error(`No such a post with id: ${dto.id}`);
-  }
-  if (post.authorId.toString() !== dto.author) {
-    throw new Error(
-      'Cannot update the post when the user wants to update is not the author of the post'
-    );
-  }
+
+  assert(!!post, `No such a post with id: ${dto.id}`);
+  assert(
+    post.authorId.toString() === dto.author,
+    'Cannot update the post when the user wants to update is not the author of the post'
+  );
+
   return await PostModel.findByIdAndUpdate(dto.id)
     .set({
       authorId: new ObjectId(dto.author),
@@ -152,9 +151,7 @@ export async function findPostById(id: string): Promise<PostVo | null> {
     })
     .exec();
 
-  if (!posts.length) {
-    return null;
-  }
+  assert(posts.length, `post with id "${id}" is not found`);
 
   return posts[0];
 }

@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { ObjectId } from 'mongodb';
 import {
   CurrentUserVo,
@@ -5,7 +6,7 @@ import {
   RegisterStatus,
   RegisterUserDto,
   UpdateCurrentUserDto,
-  UserModel
+  UserModel,
 } from '../models/user.model';
 
 export async function login(dto: LoginUserDto) {
@@ -72,9 +73,8 @@ export async function fetchCurrent(id: string): Promise<CurrentUserVo | null> {
     })
     .exec();
 
-  if (!users.length) {
-    return null;
-  }
+  assert(users.length, `No user with id "${id}"`);
+
   return users[0];
 }
 
