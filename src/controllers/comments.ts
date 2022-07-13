@@ -6,7 +6,6 @@ export const findCommentsByPostId: Router.IMiddleware = async (ctx) => {
     ctx.params.postId
   );
 
-  ctx.status = 200;
   ctx.body = {
     code: 200,
     message: null,
@@ -20,7 +19,6 @@ export const createComment: Router.IMiddleware = async (ctx) => {
     userId: ctx.session!.currentId,
   });
 
-  ctx.status = 200;
   ctx.body = {
     code: 200,
     status: 'success',
@@ -35,7 +33,6 @@ export const updateComment: Router.IMiddleware = async (ctx) => {
     userId: ctx.session!.currentId,
   });
 
-  ctx.status = 200;
   ctx.body = {
     code: 200,
     message: null,
@@ -46,7 +43,6 @@ export const updateComment: Router.IMiddleware = async (ctx) => {
 export const deleteComment: Router.IMiddleware = async (ctx) => {
   const deleted = await commentsService.deleteComment(ctx.request.body.id);
 
-  ctx.status = 200;
   ctx.body = {
     data: deleted,
     code: 200,
