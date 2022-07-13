@@ -1,11 +1,9 @@
 import Koa from 'koa';
 import cookie from 'koa-cookie';
-import render from 'koa-ejs';
 import KoaLogger from 'koa-logger';
 import session from 'koa-session';
 import serve from 'koa-static';
 import cors from 'koa2-cors';
-import path from 'path';
 import { config } from './config';
 import connectMongoDb from './connectMongoDb';
 import { bodyParser } from './middlewares/body-parser';
@@ -15,15 +13,6 @@ import { withoutPrefix } from './middlewares/without-prefix';
 import * as allRoutes from './routes';
 
 const app = new Koa();
-
-// https://www.npmjs.com/package/koa-ejs
-render(app, {
-  root: path.join(__dirname, 'views'),
-  layout: 'layout',
-  viewExt: 'ejs',
-  cache: false,
-  // debug: true,
-});
 
 const PORT = config.port;
 
