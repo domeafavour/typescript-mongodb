@@ -10,11 +10,9 @@ import { config } from './config';
 import connectMongoDb from './connectMongoDb';
 import { bodyParser } from './middlewares/body-parser';
 import { checkLogin } from './middlewares/check-login';
+import { handleRoutesError } from './middlewares/handle-routes-error';
 import { withoutPrefix } from './middlewares/without-prefix';
-import commentsRoutes from './routes/comments';
-import filesRoutes from './routes/files';
-import postsRoutes from './routes/posts';
-import userRoutes from './routes/user';
+import * as allRoutes from './routes';
 
 const app = new Koa();
 
@@ -42,10 +40,9 @@ app.use(checkLogin);
 app.use(bodyParser);
 
 // use routes
-app.use(postsRoutes.routes());
-app.use(commentsRoutes.routes());
-app.use(userRoutes.routes());
-app.use(filesRoutes.routes());
+Object.values(allRoutes).forEach((routes) => {
+  app.use(handleRoutesError(routes.routes()));
+});
 
 connectMongoDb().catch(console.dir);
 
